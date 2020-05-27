@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:jitsi_meet/jitsi_meeting_listener.dart';
+import 'package:jitsi_meet_example/no-glow-effect.scroll-behavior.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,12 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final serverText = TextEditingController();
+  final serverText = TextEditingController(text: "https://joona.icu");
   final roomText = TextEditingController(text: "plugintestroom");
   final subjectText = TextEditingController(text: "My Plugin Test Meeting");
   final nameText = TextEditingController(text: "Plugin Test User");
   final emailText = TextEditingController(text: "fake@email.com");
-  final iosAppBarRGBAColor = TextEditingController(text: "#0080FF80");//transparent blue
+  final iosAppBarRGBAColor = TextEditingController(text: "#FF");//transparent blue
   var isAudioOnly = true;
   var isAudioMuted = true;
   var isVideoMuted = true;
@@ -40,125 +41,65 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color.fromRGBO(52, 58, 64, 1),
+//        dividerColor: Colors.deepPurpleAccent,
+      ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 24.0,
-                ),
-                TextField(
-                  controller: serverText,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Server URL",
-                      hintText: "Hint: Leave empty for meet.jitsi.si"),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                TextField(
-                  controller: roomText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Room",
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                TextField(
-                  controller: subjectText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Subject",
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                TextField(
-                  controller: nameText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Display Name",
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                TextField(
-                  controller: emailText,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Email",
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                TextField(
-                  controller: iosAppBarRGBAColor,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "AppBar Color(IOS only)",
-                      hintText: "Hint: This HAS to be in HEX RGBA format"),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                CheckboxListTile(
-                  title: Text("Audio Only"),
-                  value: isAudioOnly,
-                  onChanged: _onAudioOnlyChanged,
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                CheckboxListTile(
-                  title: Text("Audio Muted"),
-                  value: isAudioMuted,
-                  onChanged: _onAudioMutedChanged,
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                CheckboxListTile(
-                  title: Text("Video Muted"),
-                  value: isVideoMuted,
-                  onChanged: _onVideoMutedChanged,
-                ),
-                Divider(
-                  height: 48.0,
-                  thickness: 2.0,
-                ),
-                SizedBox(
-                  height: 64.0,
-                  width: double.maxFinite,
-                  child: RaisedButton(
-                    onPressed: () {
-                      _joinMeeting();
-                    },
-                    child: Text(
-                      "Join Meeting",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Colors.blue,
-                  ),
-                ),
-                SizedBox(
-                  height: 48.0,
-                ),
-              ],
+          //automaticallyImplyLeading: false,
+          title: Text('Joona.icu'),
+          actions: <Widget>
+          [
+            IconButton(
+              icon: Icon(Icons.info),
+              onPressed: () {  },
             ),
-          ),
+          ],
+        ),
+        body: Row(
+          children: <Widget>
+          [
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: NoGlowEffectScrollBehavior(),
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    //height: MediaQuery.of(context).size.height * 0.85,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10 * 0.1),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>
+                        [
+                          Column(
+                            children: <Widget>
+                            [
+                              Text('Joona.icu', style: TextStyle(fontFamily: "Segoe UI", fontSize: 30),),
+                              Text('Adoptez la visio-facilité', style: TextStyle(fontFamily: "Segoe UI", fontSize: 15),),
+                            ],
+                          ),
+                          Image(image: AssetImage('assets/images/base-main-logo.png'),),
+                          TextFormField(
+                              decoration: InputDecoration(hintText: 'Entrez un nom de conference'),
+                              textInputAction: TextInputAction.go,
+                              onFieldSubmitted: (term){
+                              }
+                          ),
+                          RaisedButton(
+                            onPressed: (){
+                              _joinMeeting();
+                            },
+                            child: Text('Commencer'),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

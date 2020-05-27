@@ -69,9 +69,13 @@ class JitsiViewController: UIViewController {
             builder.audioOnly = self.audioOnly ?? false
             builder.audioMuted = self.audioMuted ?? false
             builder.videoMuted = self.videoMuted ?? false
+            builder.setFeatureFlag("pip.enabled", withValue: false)
+            builder.setFeatureFlag("recording.enabled", withValue: false)
+            builder.setFeatureFlag("ios.recording.enabled", withValue: false)
+            builder.setFeatureFlag("live-streaming.enabled", withValue: false)
         }
         //        print("Options, \(options.serverURL)!")
-        
+
         jitsiMeetView.join(options)
         
         // Enable jitsimeet view to be a view that can be displayed
